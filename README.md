@@ -11,5 +11,5 @@ It includes:
         * colors.c - print in color  
         * modules directory  
             * application specific functions go here  
-    * include directory  
-        * all header files for included .c files  
+* include directory  
+  * all header files for included .c files  

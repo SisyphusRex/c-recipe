@@ -13,16 +13,12 @@ It includes:
             * application specific functions go here
 * include/
   * all header files for included .c files
-* unity/
-  * testing suite
-* test/
-  * unit test files for unity
+
 
 ## how-to
 Put all of your .c in src, all of your .h in include.
 
-Run "make test" to run unit tests.
-Run "make cleantest" to clean test build.
+
 
 Run "make myprograme.exe" to build production.
 Run "make clean" to clean production build.

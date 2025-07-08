@@ -65,19 +65,25 @@ clean:
 PATHT = test/
 PATHU = unity/src/
 PATH_TEST_B = test_build/
-PATH_TEST_D = test_build/depends/
-PATH_TEST_O = test_build/objs/
-PATH_TEST_OS = test_build/objs/src/
-PATH_TEST_OT = test_build/objs/test/
-PATH_TEST_OU = test_build/objs/unity/
-PATH_TEST_R = test_build/results/
-PATH_TEST_E = test_build/executables/
+PATH_TEST_D = $(PATH_TEST_B)depends/
+PATH_TEST_O = $(PATH_TEST_B)objs/
+PATH_TEST_OS = $(PATH_TEST_O)src/
+PATH_TEST_OT = $(PATH_TEST_O)test/
+PATH_TEST_OU = $(PATH_TEST_O)unity/
+PATH_TEST_R =  $(PATH_TEST_B)results/
+PATH_TEST_E =  $(PATH_TEST_B)executables/
 
 
 
 SRCT = $(shell find $(PATHT) -name "*.c")
 
 RESULTS = $(patsubst $(PATHT)%Test.c,$(PATH_TEST_R)%Test.txt,$(SRCT))
+
+show_results:
+	@echo $(RESULTS)
+
+showPath:
+	@echo $(PATH_TEST_R)
 
 PASSED = `grep -r -s PASS $(PATH_TEST_R)`
 FAIL = `grep -r -s FAIL $(PATH_TEST_R)`

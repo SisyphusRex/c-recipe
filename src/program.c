@@ -1,51 +1,41 @@
 #include <stdio.h>
-#include "program.h"
-#include "ui.h"
-#include "modules/module1.h"
-#include "modules/module2.h"
+#include "modules/mod1.h"
 
-int run(int argCount, char *passedArgs[])
+//
+//
+//  Bootstrap File
+//
+//
+
+int isOdd(int x)
 {
-    /*
-    if (argCount > 0)
+    int oddInts[] = {1, 3, 5, 7, 9};
+    int remainder = x % 10;
+    for (int i = 0; i < 5; i++)
     {
-        printf("You entered:\n");
-        for (int i = 0; i < argCount; i++)
+        if (remainder == oddInts[i])
         {
 
-            printf("%s\n", passedArgs[i]);
+            return 1;
         }
+    }
+    return 0;
+}
+
+int run(int argc, char *args[])
+{
+    int x = 439;
+    int oddCheck;
+
+    oddCheck = isOdd(x);
+
+    if (oddCheck == 1)
+    {
+        printf("%d is odd.\n", x);
     }
     else
     {
-        printf("You entered no arguments.\n");
-    }
-    */
-
-    const char *menu[] = {"Menu Option 1", "Menu Option 2", "Exit.", NULL};
-    int running = 1;
-
-    while (running == 1)
-    {
-        int userInput = PrintMenuAndGetMenuInput(menu);
-
-        switch (userInput)
-        {
-        case 1:
-
-            break;
-        case 2:
-
-            break;
-        case 3:
-            // Exit program
-            Goodbye();
-            return 0;
-        default:
-            // No match.
-            ErrorSwitchCase();
-            return 1;
-        }
+        printf("%d is even.\n", x);
     }
 
     return 0;

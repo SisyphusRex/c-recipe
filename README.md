@@ -1,6 +1,3 @@
-# ** CURRENTLY UNDER REPAIR **
-TODO: include production and test build instructions in makefile: test build currently not working
-
 # c-recipe
 This is a recipe for making a Command Line program in C.
 

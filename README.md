@@ -7,6 +7,10 @@ This is a recipe for making a Command Line program in C.  Builds are handled by 
    * entry point into program
 3. program.c
    * menu/command line logic here
+4. colors.c
+   * allows printing to terminal in color
+5. ui.c
+   * handles all printing to terminal and input validation
 4. unity
    * src files for unity unit test framework
 5. makefile
@@ -85,3 +89,9 @@ Please see the following example of the file structure:
 
 ```
 
+## main.c
+Entry point into the program.  Essentially the bootstrap file.  
+If your program takes command line arguments, this file strips the program call from the arguments and passes the remainder to program.c
+
+## program.c
+This is where the driving logic, the menu structure, the meat, of your program lies.  You handle the command line arguments here or you use switch case and invoke ui.c to handle menu choices.

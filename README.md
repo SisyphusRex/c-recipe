@@ -31,11 +31,17 @@ Please see the following example of the file structure:
 │   ├── modules
 │   │   ├── module1.h
 │   │   └── module2.h 
+│   ├── utils
+│   │   ├── colors.h
+│   │   └── ui.h
 │   └── program.h
 ├── src
 │   ├── modules
 │   │   ├── module1.c
 │   │   └── module2.c
+│   ├── utils
+│   │   ├── colors.c
+│   │   └── ui.c
 │   ├── main.c
 │   └── program.c
 ├── test
@@ -54,6 +60,9 @@ Please see the following example of the file structure:
 │   │   │   ├── modules
 │   │   │   │   ├── module1.o
 │   │   │   │   └── module2.o
+│   │   │   ├── utils
+│   │   │   │   ├── colors.o
+│   │   │   │   └── ui.o
 │   │   │   └── program.o
 │   │   ├── test
 │   │   │   ├── modules
@@ -73,5 +82,6 @@ Please see the following example of the file structure:
 │       ├── unity.c
 │       └── unity.h
 └── makefile
+
 ```
 

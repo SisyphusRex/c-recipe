@@ -1,6 +1,18 @@
 # c-recipe
 This is a recipe for making a Command Line program in C.  Builds are handled by Make and unit testing is handled by Unity.
 
+## What's Included  
+1. Basic File Structure
+2. main.c
+   * entry point into program
+3. program.c
+   * menu/command line logic here
+4. unity
+   * src files for unity unit test framework
+5. makefile
+   * makes production and test builds separately
+   * recursively locates src files and recreates file structure
+
 ## File Structure
 The makefile is dynamic and allows you to create subdirectories in your project folders.  The file structure of your src directory must be repeated in your include and test directory.  
 Make will recreate your structure automatically in the build directories.  

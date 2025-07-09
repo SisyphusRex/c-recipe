@@ -3,6 +3,7 @@ This is a recipe for making a Command Line program in C.  Builds are handled by 
 
 ## File Structure
 The makefile is dynamic and allows you to create subdirectories in your project folders.  The file structure of your src directory must be repeated in your include and test directory.  
+Make will recreate your structure automatically in the build directories.  
 Please see the following example of the file structure:  
 ```
 .

@@ -1,12 +1,6 @@
 #include <stdio.h>
 #include "modules/mod1.h"
 
-//
-//
-//  Bootstrap File
-//
-//
-
 int isOdd(int x)
 {
     int oddInts[] = {1, 3, 5, 7, 9};

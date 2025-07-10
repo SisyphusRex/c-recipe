@@ -99,7 +99,7 @@ $(PATH_TB_O_U)%.o:: $(PATH_U)%.c $(PATH_U)%.h
 	@$(MKDIR) $(dir $@)
 	$(COMPILE) $(CFLAGS) $< -o $@
 
-# Build depend files (not currently used)
+# Build depend files
 $(PATH_TB_D)%.d:: $(PATH_T)%.c
 	@$(MKDIR) $(dir $@)
 	$(DEPEND) $@ $<

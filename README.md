@@ -29,6 +29,9 @@ Please see the following example of the file structure:
 │   ├── modules
 │   │   ├── module1.o
 │   │   └── module2.o
+│   ├── utils
+│   │   ├── colors.o
+│   │   └── ui.o
 │   ├── main.o
 │   └── program.o
 ├── include

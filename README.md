@@ -1,4 +1,5 @@
 # UNDER CONSTRUCTION: 
+07/14/25: Moved to linux machine.
 The test build makefile requires the compiler to handle .d (depends) files.  Without this support, src files cannot include header files from other parts of the project.  
 I could include ALL header files from the include directory as dependencies for ALL src files, but that defeats the purpose of make and reducing build time.  I am currently in the process of rebuilding gcc on my machine to enable gdc support.
 # c-recipe

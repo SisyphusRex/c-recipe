@@ -70,8 +70,8 @@ DEPEND_S_NOMAIN = $(patsubst $(PATH_TB_O_S)%.o,$(PATH_TB_D_S)%.d,$(SRC_O_S_NOMAI
 DEPEND_T = $(patsubst $(PATH_TB_O_T)%.o,$(PATH_TB_D_T)%.d,$(SRC_O_T))
 ALL_DEPEND_NOMAIN = $(DEPEND_S_NOMAIN) $(DEPEND_T)
 
-SRC_O_T:
-	@echo $(SRC_O_T)
+SRC_O_S_NOMAIN:
+	@echo $(SRC_O_S_NOMAIN)
 
 # Convert test files to .txt keeping same path
 RESULTS = $(patsubst $(PATH_T)%Test.c,$(PATH_TB_R)%Test.txt,$(SRC_T))
@@ -120,7 +120,7 @@ $(PATH_TB_O_U)%.o:: $(PATH_U)%.c $(PATH_U)%.h
 $(ALL_DEPEND_NOMAIN):
 	@$(MKDIR) $(PATH_TB)
 	@$(MKDIR) $(dir $@)
-	@touch $@
+	
 
 
 
@@ -177,7 +177,7 @@ $(PATH_B_O)%.o: $(PATH_S)%.c
 $(DEPEND_S):
 	@$(MKDIR) $(PATH_B)
 	@$(MKDIR) $(dir $@)
-	@touch $@
+	
 
 # Clean build files
 cleanproduction:

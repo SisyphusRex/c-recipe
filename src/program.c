@@ -1,47 +1,53 @@
-#include "utils/math.h"
-
+#include "program.h"
+#include "utils/ui.h"
 #include <stdio.h>
 
-//
-//
-//  Bootstrap File
-//
-//
-
-int isOdd(int x)
+int run(int argCount, char *passedArgs[])
 {
-    int oddInts[] = {1, 3, 5, 7, 9};
-    int remainder = x % 10;
-    for (int i = 0; i < 5; i++)
+    /*
+    if (argCount > 0)
     {
-        if (remainder == oddInts[i])
+        printf("You entered:\n");
+        for (int i = 0; i < argCount; i++)
         {
 
-            return 1;
+            printf("%s\n", passedArgs[i]);
         }
-    }
-    return 0;
-}
-
-int run(int argc, char *args[])
-{
-    int x = 439;
-    int oddCheck;
-
-    oddCheck = isOdd(x);
-
-    if (oddCheck == 1)
-    {
-        printf("%d is odd.\n", x);
     }
     else
     {
-        printf("%d is even.\n", x);
+        printf("You entered no arguments.\n");
     }
+    */
 
-    int a = 1;
-    int b = 2;
-    int sum = addInts(a, b);
+    const char *menu[] = {"<menu choice 1>", "<menu choice 2>", "Exit.", NULL};
+    int running = 1;
+
+    while (running == 1)
+    {
+        int userInput = PrintMenuAndGetMenuInput(menu);
+
+        switch (userInput)
+        {
+        case 1:
+            // Enter choice 1
+
+            break;
+        case 2:
+            // Enter choice 2
+
+            break;
+        case 3:
+            // Exit program
+            Goodbye();
+            running = 0;
+            break;
+        default:
+            // No match.
+            ErrorSwitchCase();
+            return 1;
+        }
+    }
 
     return 0;
 }

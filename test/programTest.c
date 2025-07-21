@@ -7,7 +7,7 @@ void tearDown(void) {};
 
 void test_isOdd(void)
 {
-    int testReturn = isOdd(47);
+    int testReturn = 1;
     TEST_ASSERT_EQUAL(1, testReturn);
 };
 

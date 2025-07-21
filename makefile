@@ -1,11 +1,7 @@
-# INSERT PROGRAM NAME HERE!!!
+# NAME YOUR PROGRAM HERE
 PROGRAM_NAME = myprogram
 
-#####################
-# SHARED BUILD INFO #
-#####################
-
-# Check OS and determine correct commands
+# ENVIRONMENT CHECK
 ifeq ($(OS),Windows_NT)
   ifeq ($(shell uname -s),) # not in a bash-like shell
 	CLEANUP = rmdir /S /Q
@@ -21,30 +17,21 @@ else
 	TARGET_EXTENSION=out
 endif
 
-# Prevent file name interference
-.PHONY: production
-.PHONY: cleanproduction
+# TARGETS NOT FILES
 .PHONY: test
 .PHONY: cleantest
+.PHONY: production
+.PHONY: cleanproduction
+.PHONY: clean
 
-# Compiler Commands
-CC = gcc
-COMPILE = $(CC) -c
-LINK = $(CC)
-CFLAGS = -I$(PATH_I)
-CPPFLAGS = -MMD -MF
-
-##############
-# TEST BUILD #
-##############
-
-# Test Compiler Commands
-TCFLAGS = $(CFLAGS) -I$(PATH_U)
-
-# Test Directory paths
+# DIRECTORY PATHS
+#	Shared Paths
+PATH_S = src/
+PATH_I = include/
+#	Test Build Paths
 PATH_T = test/
-PATH_U = unity/src/
 PATH_TB = testbuild/
+PATH_U = unity/src/
 PATH_TB_D = $(PATH_TB)depends/
 PATH_TB_D_S = $(PATH_TB_D)src/
 PATH_TB_D_T = $(PATH_TB_D)test/
@@ -54,34 +41,49 @@ PATH_TB_O_T = $(PATH_TB_O)test/
 PATH_TB_O_U = $(PATH_TB_O)unity/
 PATH_TB_R = $(PATH_TB)results/
 PATH_TB_N = $(PATH_TB)bin/
+#	Production Build Paths
+PATH_B = build/
+PATH_B_D = $(PATH_B)depends/
+PATH_B_O = $(PATH_B)objs/
+PATH_B_N = $(PATH_B)bin/
 
-# Find test file paths recursively
+# SOURCE CODE, OBJECTS, DEPENDS
+#	Test Source
 SRC_T = $(shell find $(PATH_T) -name "*.c")
-
-# Find src file paths, excluding main, recursively
 SRC_S_NOMAIN = $(shell find $(PATH_S) -name "*.c" -not -name "main.c")
+#	Test Objects
+SRC_TB_O_S = $(patsubst $(PATH_S)%.c,$(PATH_TB_O_S)%.o,$(SRC_S_NOMAIN))
+SRC_TB_O_T = $(patsubst $(PATH_T)%.c,$(PATH_TB_O_T)%.o,$(SRC_T))
+#	Test Depends
+DEPEND_TB_S = $(patsubst $(PATH_TB_O_S)%.o,$(PATH_TB_D_S)%.d,$(SRC_TB_O_S))
+DEPEND_TB_T = $(patsubst $(PATH_TB_O_T)%.o,$(PATH_TB_D_T)%.d,$(SRC_TB_O_T))
+ALL_DEPEND_TB = $(DEPEND_TB_S) $(DEPEND_TB_T)
+#	Production Source
+SRC_S = $(shell find $(PATH_S) -name "*.c")
+#	Production Objects
+SRC_B_O = $(patsubst $(PATH_S)%.c,$(PATH_B_O)%.o,$(SRC_S))
+#	Production Depends
+DEPEND_B = $(patsubst $(PATH_B_O)%.o,$(PATH_B_D)%.d,$(SRC_B_O))
 
-# Get List of Objects
-SRC_O_S_NOMAIN = $(patsubst $(PATH_S)%.c,$(PATH_TB_O_S)%.o,$(SRC_S_NOMAIN))
-SRC_O_T = $(patsubst $(PATH_T)%.c,$(PATH_TB_O_T)%.o,$(SRC_T))
+# COMPILER
+CC = gcc
+CFLAGS = -I$(PATH_I) -Wall
+TEST_CFLAGS = $(CFLAGS) -I$(PATH_U)
+CPPFLAGS = -MMD -MF
+COMPILE = $(CC) -c
+LINK = $(CC)
 
-# Get list of depends files
-DEPEND_S_NOMAIN = $(patsubst $(PATH_TB_O_S)%.o,$(PATH_TB_D_S)%.d,$(SRC_O_S_NOMAIN))
-DEPEND_T = $(patsubst $(PATH_TB_O_T)%.o,$(PATH_TB_D_T)%.d,$(SRC_O_T))
-ALL_DEPEND_NOMAIN = $(DEPEND_S_NOMAIN) $(DEPEND_T)
+##############
+# TEST BUILD #
+##############
 
-SRC_O_S_NOMAIN:
-	@echo $(SRC_O_S_NOMAIN)
-
-# Convert test files to .txt keeping same path
+# TEST VARIABLES
 RESULTS = $(patsubst $(PATH_T)%Test.c,$(PATH_TB_R)%Test.txt,$(SRC_T))
-
-# Search for test results in .txt files
 PASSED = `grep -r -s PASS $(PATH_TB_R)`
 FAIL = `grep -r -s FAIL $(PATH_TB_R)`
 IGNORE = `grep -r -s IGNORE $(PATH_TB_R)`
 
-# Test entry point
+# ENTRY POINT
 test: $(RESULTS)
 	@echo "-----------------------\nIGNORES:\n-----------------------"
 	@echo "$(IGNORE)"
@@ -91,45 +93,45 @@ test: $(RESULTS)
 	@echo "$(PASSED)"
 	@echo "\nDONE"
 
-# Build results from executables
+# CREATE RESULTS OF TEST EXECUTABLE
 $(PATH_TB_R)%.txt: $(PATH_TB_N)%.$(TARGET_EXTENSION)
 	@$(MKDIR) $(dir $@)
 	-./$< > $@ 2>&1
 
-# Build executables for each test by linking relevant object files
-$(PATH_TB_N)%Test.$(TARGET_EXTENSION): $(PATH_TB_O_T)%Test.o $(PATH_TB_O_U)unity.o $(SRC_O_S_NOMAIN)
+# CREATE TEST EXECUTABLE BY LINKING OBJECTS
+$(PATH_TB_N)%Test.$(TARGET_EXTENSION): $(PATH_TB_O_T)%Test.o $(PATH_TB_O_U)unity.o $(SRC_TB_O_S)
 	@$(MKDIR) $(dir $@)
 	$(LINK) -o $@ $^
 
-# Build test object files
+# CREATE TEST FILE OBJECTS AND DEPENDENCY FILES BY COMPILING
 $(PATH_TB_O_T)%.o: $(PATH_T)%.c
 	@$(MKDIR) $(dir $@)
-	$(COMPILE) $(TCFLAGS) $(CPPFLAGS) "$(@:$(PATH_TB_O_T)%.o=$(PATH_TB_D_T)%.d)" $< -o $@
+	$(COMPILE) $(TEST_CFLAGS) $(CPPFLAGS) "$(@:$(PATH_TB_O_T)%.o=$(PATH_TB_D_T)%.d)" $< -o $@
 
-# Build source object files
+# CREATE SRC FILE OBJECTS AND DEPENDENCY FILES BY COMPILING
 $(PATH_TB_O_S)%.o: $(PATH_S)%.c
 	@$(MKDIR) $(dir $@)
-	$(COMPILE) $(TCFLAGS) $(CPPFLAGS) "$(@:$(PATH_TB_O_S)%.o=$(PATH_TB_D_S)%.d)" $< -o $@
+	$(COMPILE) $(TEST_CFLAGS) $(CPPFLAGS) "$(@:$(PATH_TB_O_S)%.o=$(PATH_TB_D_S)%.d)" $< -o $@
 
-# Build unity object files
+# CREATE UNITY OBJECTS BY COMPILING
 $(PATH_TB_O_U)%.o:: $(PATH_U)%.c $(PATH_U)%.h
 	@$(MKDIR) $(dir $@)
-	$(COMPILE) $(CFLAGS) $< -o $@
+	$(COMPILE) $(TEST_CFLAGS) $< -o $@
 
-# Make Depend file directories
-$(ALL_DEPEND_NOMAIN):
+# MAKE DEPENDENCY FILE DIRECTORY
+$(ALL_DEPEND_TB):
 	@$(MKDIR) $(PATH_TB)
 	@$(MKDIR) $(dir $@)
-	
 
+# INCLUDE DEPENDENCY FILES AS COMMANDS
+-include $(ALL_DEPEND_TB)
 
-
-# Clean test build
+# CLEAN TEST BUILD
 cleantest:
 	$(CLEANUP) $(PATH_TB)
-	@echo "cleaned the test build"
+	@echo "cleaned test build"
 
-# Prevent intermediate files from being deleted
+# SAVE SOME FILES
 .PRECIOUS: $(PATH_TB_N)%Test.$(TARGET_EXTENSION)
 .PRECIOUS: $(PATH_TB_D)%.d
 .PRECIOUS: $(PATH_TB_O_S)%.o
@@ -141,56 +143,38 @@ cleantest:
 # Production Build #
 ####################
 
+# ENTRY POINT
+production: $(PATH_B_N)$(PROGRAM_NAME).$(TARGET_EXTENSION)
 
-PATH_S = src/
-PATH_B = build/
-PATH_I = include/
-PATH_N = bin/
-PATH_B_O = $(PATH_B)objs/
-PATH_B_D = $(PATH_B)depends/
-
-# Entry point
-TARGET = $(PATH_N)$(PROGRAM_NAME).$(TARGET_EXTENSION)
-
-
-production: $(TARGET)
-
-
-# Find all src file paths relative to src directory
-SRC_S = $(shell find $(PATH_S) -name "*.c")
-
-# Create list of all object files to be created with paths relative to build directory
-OBJECTS = $(patsubst $(PATH_S)%.c,$(PATH_B_O)%.o,$(SRC_S))
-
-# Get list of depends files
-DEPEND_S = $(patsubst $(PATH_B_O)%.o,$(PATH_B_D)%.d,$(OBJECTS))
-
-# Build executable by linking objects
-$(TARGET): $(OBJECTS)
+# CREATE EXECUTABLE BY LINKING OBJECTS
+$(PATH_B_N)$(PROGRAM_NAME).$(TARGET_EXTENSION): $(SRC_B_O)
+	$(MKDIR) $(dir $@)
 	$(LINK) -o $@ $^
 
-# Compile object files.  Create path/directory of object file and then compile.
+# BUILD OBJECTS
 $(PATH_B_O)%.o: $(PATH_S)%.c
-	@mkdir -p $(dir $@)
+	$(MKDIR) $(dir $@)
 	$(COMPILE) $(CFLAGS) $(CPPFLAGS) "$(@:$(PATH_B_O)%.o=$(PATH_B_D)%.d)" $< -o $@
 
-$(DEPEND_S):
+# MAKE DEPENDENCY FILE DIRECTORY
+$(DEPEND_B):
 	@$(MKDIR) $(PATH_B)
 	@$(MKDIR) $(dir $@)
-	
 
-# Clean build files
+-include $(DEPEND_B)
+
 cleanproduction:
 	$(CLEANUP) $(PATH_B)
-	$(CLEANUP) $(TARGET)
-	@echo "cleaned the production build"
+	@echo "cleaned production build"
 
-#################################
-# Test Dependency Rule Addition #
-#################################
--include $(ALL_DEPEND_NOMAIN)
+# SAVE SOME FILES
+.PRECIOUS: $(PATH_B_N)$(PROGRAM_NAME).$(TARGET_EXTENSION)
+.PRECIOUS: $(PATH_B_D)%.d
+.PRECIOUS: $(PATH_B_O)%.o
 
-#######################################
-# Production Dependency Rule Addition #
-#######################################
--include $(DEPEND_S)
+#########
+# FINAL #
+#########
+
+clean: cleantest cleanproduction
+	@echo "all clean"

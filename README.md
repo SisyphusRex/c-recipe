@@ -101,3 +101,6 @@ If your program takes command line arguments, this file strips the program call 
 This is where the driving logic, the menu structure, the meat, of your program lies.  You handle the command line arguments here or you use switch case and invoke ui.c to handle menu choices.
 
 ## colors.c
+Contains functions for printing to the terminal in different colors.
+
+## ui.c

@@ -1,7 +1,3 @@
-# UNDER CONSTRUCTION: 
-07/14/25: Moved to linux machine.
-The test build makefile requires the compiler to handle .d (depends) files.  Without this support, src files cannot include header files from other parts of the project.  
-I could include ALL header files from the include directory as dependencies for ALL src files, but that defeats the purpose of make and reducing build time.  I am currently in the process of rebuilding gcc on my machine to enable gdc support.
 # c-recipe
 This is a recipe for making a Command Line program in C.  Builds are handled by Make and unit testing is handled by Unity.
 
@@ -27,17 +23,18 @@ Make will recreate your structure automatically in the build directories.
 Please see the following example of the file structure:  
 ```
 .
-├── bin
-│   └── myprogram.out
 ├── build
-│   ├── modules
-│   │   ├── module1.o
-│   │   └── module2.o
-│   ├── utils
-│   │   ├── colors.o
-│   │   └── ui.o
-│   ├── main.o
-│   └── program.o
+│   ├── bin
+│   │   └── myprogram.out
+│   └── objs
+│   │   ├── modules
+│   │   │   ├── module1.o
+│   │   │   └── module2.o
+│   │   ├── utils
+│   │   │   ├── colors.o
+│   │   │   └── ui.o
+│   │   ├── main.o
+│   │   └── program.o
 ├── include
 │   ├── modules
 │   │   ├── module1.h
@@ -102,3 +99,5 @@ If your program takes command line arguments, this file strips the program call 
 
 ## program.c
 This is where the driving logic, the menu structure, the meat, of your program lies.  You handle the command line arguments here or you use switch case and invoke ui.c to handle menu choices.
+
+## colors.c

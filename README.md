@@ -104,3 +104,21 @@ This is where the driving logic, the menu structure, the meat, of your program l
 Contains functions for printing to the terminal in different colors.
 
 ## ui.c
+The primary function is PrintMenuAndGetMenuInput().  It does exactly what it says.  You pass an array of strings (the last element must be NULL) and the function prints them out as menu options, waits for user input, validates input, and returns an integer representing the user's choice (choices start at 1, not 0).
+
+## unity
+This is the unit testing framework.  The best resource is:  
+https://github.com/ThrowTheSwitch/Unity
+
+## makefile
+The makefile controls both the production and the test build.  It accounts for directories and subdirectories in your src and test folders.  Be mindful! You must maintain your directory structure from src/ to include/ and test/ for make to find the files it needs.  
+The makefile accounts for your src files referencing functions from other files.  It also autogenerates dependencies based on the #include section of your files.  
+The ONLY thing that you must change in the makefile is to update your program name on line 1.  
+### makefile Usage
+1. make production
+   * builds production executable
+2. make test
+   * builds all tests and reports findings
+3. make clean
+   * removes build/ and testbuild/ directories
+   * for granular removal, run make cleanproduction or make cleantest

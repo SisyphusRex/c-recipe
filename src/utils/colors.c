@@ -1,3 +1,6 @@
+// Copyright 2025 Theodore Podewil
+// GPL-3.0-or-later
+
 #include <stdio.h>
 
 // The style struct will contain the ANSI color codes

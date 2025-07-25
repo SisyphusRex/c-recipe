@@ -122,3 +122,8 @@ The ONLY thing that you must change in the makefile is to update your program na
 3. make clean
    * removes build/ and testbuild/ directories
    * for granular removal, run make cleanproduction or make cleantest
+  
+
+_______________________________________________________________________________________________________________________________________________________________________________________________
+Copyright 2025 Theodore Podewil
+GPL-3.0-or-later

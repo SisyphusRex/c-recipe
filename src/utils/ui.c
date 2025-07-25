@@ -1,3 +1,6 @@
+// Copyright 2025 Theodore Podewil
+// GPL-3.0-or-later
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "utils/ui.h"

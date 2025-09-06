@@ -4,6 +4,9 @@
 # NAME YOUR PROGRAM HERE
 PROGRAM_NAME = myprogram
 
+# Set default goal if no argument passed to make
+.DEFAULT_GOAL = production
+
 # ENVIRONMENT CHECK
 ifeq ($(OS),Windows_NT)
   ifeq ($(shell uname -s),) # not in a bash-like shell

@@ -134,8 +134,8 @@ $(ALL_DEPEND_TB):
 
 # CLEAN TEST BUILD
 cleantest:
-	$(CLEANUP) $(PATH_TB)
-	@echo "cleaned test build"
+	@$(CLEANUP) $(PATH_TB)
+	@echo "cleaned $(PROGRAM_NAME) test build"
 
 # SAVE SOME FILES
 .PRECIOUS: $(PATH_TB_N)%Test.$(TARGET_EXTENSION)
@@ -154,12 +154,12 @@ production: $(PATH_B_N)$(PROGRAM_NAME).$(TARGET_EXTENSION)
 
 # CREATE EXECUTABLE BY LINKING OBJECTS
 $(PATH_B_N)$(PROGRAM_NAME).$(TARGET_EXTENSION): $(SRC_B_O)
-	$(MKDIR) $(dir $@)
+	@$(MKDIR) $(dir $@)
 	$(LINK) -o $@ $^
 
 # BUILD OBJECTS
 $(PATH_B_O)%.o: $(PATH_S)%.c
-	$(MKDIR) $(dir $@)
+	@$(MKDIR) $(dir $@)
 	$(COMPILE) $(CFLAGS) $(CPPFLAGS) "$(@:$(PATH_B_O)%.o=$(PATH_B_D)%.d)" $< -o $@
 
 # MAKE DEPENDENCY FILE DIRECTORY
@@ -170,8 +170,8 @@ $(DEPEND_B):
 -include $(DEPEND_B)
 
 cleanproduction:
-	$(CLEANUP) $(PATH_B)
-	@echo "cleaned production build"
+	@$(CLEANUP) $(PATH_B)
+	@echo "cleaned $(PROGRAM_NAME) production build"
 
 # SAVE SOME FILES
 .PRECIOUS: $(PATH_B_N)$(PROGRAM_NAME).$(TARGET_EXTENSION)
@@ -183,4 +183,4 @@ cleanproduction:
 #########
 
 clean: cleantest cleanproduction
-	@echo "all clean"
+	@echo "$(PROGRAM_NAME) all clean"

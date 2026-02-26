@@ -91,13 +91,14 @@ IGNORE = `grep -r -s IGNORE $(PATH_TB_R)`
 
 # ENTRY POINT
 test: $(RESULTS)
+	@echo "\n## $(PROGRAM_NAME) TESTS BEGIN ##\n"
 	@echo "-----------------------\nIGNORES:\n-----------------------"
 	@echo "$(IGNORE)"
 	@echo "-----------------------\nFAILURES:\n-----------------------"
 	@echo "$(FAIL)"
 	@echo "-----------------------\nPASSED:\n-----------------------"
 	@echo "$(PASSED)"
-	@echo "\nDONE"
+	@echo "\n# $(PROGRAM_NAME) TESTS DONE #\n"
 
 # CREATE RESULTS OF TEST EXECUTABLE
 $(PATH_TB_R)%.txt: $(PATH_TB_N)%.$(TARGET_EXTENSION)
@@ -107,22 +108,22 @@ $(PATH_TB_R)%.txt: $(PATH_TB_N)%.$(TARGET_EXTENSION)
 # CREATE TEST EXECUTABLE BY LINKING OBJECTS
 $(PATH_TB_N)%Test.$(TARGET_EXTENSION): $(PATH_TB_O_T)%Test.o $(PATH_TB_O_U)unity.o $(SRC_TB_O_S)
 	@$(MKDIR) $(dir $@)
-	$(LINK) -o $@ $^
+	@$(LINK) -o $@ $^
 
 # CREATE TEST FILE OBJECTS AND DEPENDENCY FILES BY COMPILING
 $(PATH_TB_O_T)%.o: $(PATH_T)%.c
 	@$(MKDIR) $(dir $@)
-	$(COMPILE) $(TEST_CFLAGS) $(CPPFLAGS) "$(@:$(PATH_TB_O_T)%.o=$(PATH_TB_D_T)%.d)" $< -o $@
+	@$(COMPILE) $(TEST_CFLAGS) $(CPPFLAGS) "$(@:$(PATH_TB_O_T)%.o=$(PATH_TB_D_T)%.d)" $< -o $@
 
 # CREATE SRC FILE OBJECTS AND DEPENDENCY FILES BY COMPILING
 $(PATH_TB_O_S)%.o: $(PATH_S)%.c
 	@$(MKDIR) $(dir $@)
-	$(COMPILE) $(TEST_CFLAGS) $(CPPFLAGS) "$(@:$(PATH_TB_O_S)%.o=$(PATH_TB_D_S)%.d)" $< -o $@
+	@$(COMPILE) $(TEST_CFLAGS) $(CPPFLAGS) "$(@:$(PATH_TB_O_S)%.o=$(PATH_TB_D_S)%.d)" $< -o $@
 
 # CREATE UNITY OBJECTS BY COMPILING
 $(PATH_TB_O_U)%.o:: $(PATH_U)%.c $(PATH_U)%.h
 	@$(MKDIR) $(dir $@)
-	$(COMPILE) $(TEST_CFLAGS) $< -o $@
+	@$(COMPILE) $(TEST_CFLAGS) $< -o $@
 
 # MAKE DEPENDENCY FILE DIRECTORY
 $(ALL_DEPEND_TB):
